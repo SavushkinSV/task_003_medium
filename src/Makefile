@@ -4,10 +4,19 @@ FSAN=-fsanitize=leak -fsanitize=address -fsanitize=undefined -fsanitize=unreacha
 
 all: simple_db
 
-rebuild: clean pascal_matrix
+rebuild: clean simple_db
 
 simple_db: simple_db.c my_db.c
 	$(CC) $(CFLAGS) simple_db.c my_db.c -o ../bin/simple_db	
+
+simple_db_find: simple_db.c my_db.c
+	$(CC) $(CFLAGS) simple_db.c my_db.c -o ../bin/simple_db_find
+
+not_simple_db: simple_db.c my_db.c
+	$(CC) $(CFLAGS) simple_db.c my_db.c -o ../bin/not_simple_db
+
+
+
 
 build_fsanitize:
 	$(CC) $(CFLAGS) $(FSAN) pascal_triangle.c pascal.c -o ../bin/pascal_triangle
