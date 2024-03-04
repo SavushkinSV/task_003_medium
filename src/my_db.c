@@ -20,7 +20,7 @@ void error_exit() {
 }
 
 /* Функция ввода команды */
-void input_command(FILE *fin) {    
+void input_command(FILE *fin) {
     char input_string[256] = "";
     int command = -1;
     while (command != DB_EXIT) {
@@ -75,5 +75,4 @@ void db_add(FILE *fin) {
     fprintf(fin, "%02d.%02d.%d ", now->tm_mday, now->tm_mon + 1, now->tm_year + 1900);
     fprintf(fin, "%02d:%02d:%02d ", now->tm_hour, now->tm_hour, now->tm_sec);
     fprintf(fin, "%s %d\n", product, price);
-
 }
