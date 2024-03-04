@@ -3,13 +3,12 @@
 /* Функция проверки аргумента коммандной строки */
 void init_file(int argc, char *const argv[], FILE **fin) {
     if (1 == argc) {
-        // printf("1 == argc\n");
         *fin = fopen(DEFAULT_FILENAME, "a+");
-        if (!fin) error_exit();
+        // if (!fin) error_exit();
     }
     if (2 == argc) {
         *fin = fopen(argv[1], "a+");
-        if (!fin) error_exit();
+        // if (!fin) error_exit();
     }
 }
 
