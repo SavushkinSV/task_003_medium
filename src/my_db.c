@@ -113,5 +113,5 @@ int parse_line(Row *row, char *str) {
 
 /* Функция сравления дат возвращает 0 если не равны */
 int compare_date(Row *const date1, Row *const date2) {
-    return (date1->day == date2->day) || (date1->month == date2->month) || (date1->year == date2->year);
+    return (date1->day == date2->day) && (date1->month == date2->month) && (date1->year == date2->year);
 }
