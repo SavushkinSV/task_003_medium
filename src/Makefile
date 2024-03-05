@@ -2,7 +2,7 @@ CFLAGS=-Werror -Wextra -Wall
 CC=gcc
 FSAN=-fsanitize=leak -fsanitize=address -fsanitize=undefined -fsanitize=unreachable -fno-sanitize-recover -fstack-protector
 
-all: simple_db
+all: simple_db simple_db_find not_simple_db
 
 rebuild: clean simple_db
 
@@ -28,4 +28,5 @@ check:
 	clang-format -style='{BasedOnStyle: Google, IndentWidth: 4, ColumnLimit: 110}' -i *.h
 	cppcheck --enable=all --suppress=missingIncludeSystem *.c
 	# valgrind --tool=memcheck --leak-check=yes ../bin/simple_db	
-	# valgrind --tool=memcheck --leak-check=yes ../bin/pascal_matrix
+	# valgrind --tool=memcheck --leak-check=yes ../bin/simple_db_find
+	# valgrind --tool=memcheck --leak-check=yes ../bin/not_simple_db

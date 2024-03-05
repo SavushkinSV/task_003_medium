@@ -34,6 +34,9 @@ void input_command(FILE *fin) {
             case (DB_FIND):
                 db_find(fin);
                 break;
+            case (DB_MAX):
+                db_max(fin);
+                break;
             default:
                 error_exit();
                 break;
@@ -49,6 +52,7 @@ int get_command(char *input_string) {
     if (strcmp(input_string, "SHOW") == 0) result = DB_SHOW;
     if (strcmp(input_string, "EXIT") == 0) result = DB_EXIT;
     if (strcmp(input_string, "FIND") == 0) result = DB_FIND;
+    if (strcmp(input_string, "MAX") == 0) result = DB_MAX;
 
     return result;
 }
@@ -111,7 +115,59 @@ int parse_line(Row *row, char *str) {
     return error;
 }
 
-/* Функция сравления дат возвращает 0 если не равны */
+/* Функция сравнения дат возвращает 0 если не равны */
 int compare_date(Row *const date1, Row *const date2) {
     return (date1->day == date2->day) && (date1->month == date2->month) && (date1->year == date2->year);
+}
+
+/* Функция поиска максимальной выручки */
+void db_max(FILE *fin) {
+    Row rows_array[SIZE_STACK];
+    fseek(fin, 0, SEEK_SET);
+    size_t len = 0;
+    char *line = NULL;
+    Row current_row;
+    int count = 0;
+    while (getline(&line, &len, fin) != EOF) {
+        if (!parse_line(&current_row, line)) {
+            count += add_rows(current_row, rows_array, count);
+        }
+    }
+    if (count)
+        print_max(rows_array, count);
+    else
+        printf("NO DATA");
+}
+
+/* Функция добавляет в массив Row и возвращает 1 если такого элемента еще не было */
+int add_rows(Row row, Row rows_array[SIZE_STACK], int size) {
+    int result = 0;
+    int i = 0;
+    if (!size) {
+        rows_array[0] = row;
+        result++;
+    } else {
+        while (i < size) {
+            if (!strcmp(rows_array[i].name, row.name)) {
+                rows_array[i].price += row.price;
+                break;
+            }
+            i++;
+        }
+    }
+    if (i == size) {
+        rows_array[i] = row;
+        result++;
+    }
+
+    return result;
+}
+
+/* Функция перебирает и печатате максимальное наименование и цену */
+void print_max(Row rows_array[SIZE_STACK], int size) {
+    Row max_row = rows_array[0];
+    for (int i = 0; i < size; i++) {
+        if (rows_array[i].price > max_row.price) max_row = rows_array[i];
+    }
+    printf("%s %d", max_row.name, max_row.price);
 }
