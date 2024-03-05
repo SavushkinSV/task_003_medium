@@ -122,7 +122,7 @@ int compare_date(Row *const date1, Row *const date2) {
 
 /* Функция поиска максимальной выручки */
 void db_max(FILE *fin) {
-    Row rows_array[SIZE_STACK];
+    Row rows_array[SIZE_ARRAY];
     fseek(fin, 0, SEEK_SET);
     size_t len = 0;
     char *line = NULL;
@@ -140,7 +140,7 @@ void db_max(FILE *fin) {
 }
 
 /* Функция добавляет в массив Row и возвращает 1 если такого элемента еще не было */
-int add_rows(Row row, Row rows_array[SIZE_STACK], int size) {
+int add_rows(Row row, Row rows_array[SIZE_ARRAY], int size) {
     int result = 0;
     int i = 0;
     if (!size) {
@@ -148,7 +148,7 @@ int add_rows(Row row, Row rows_array[SIZE_STACK], int size) {
         result++;
     } else {
         while (i < size) {
-            if (!strcmp(rows_array[i].name, row.name)) {
+            if (!strcasecmp(rows_array[i].name, row.name)) {
                 rows_array[i].price += row.price;
                 break;
             }
@@ -164,10 +164,12 @@ int add_rows(Row row, Row rows_array[SIZE_STACK], int size) {
 }
 
 /* Функция перебирает и печатате максимальное наименование и цену */
-void print_max(Row rows_array[SIZE_STACK], int size) {
+void print_max(Row rows_array[SIZE_ARRAY], int size) {
     Row max_row = rows_array[0];
     for (int i = 0; i < size; i++) {
         if (rows_array[i].price > max_row.price) max_row = rows_array[i];
     }
     printf("%s %d", max_row.name, max_row.price);
 }
+
+/* Функция сравнения строк не зависит от регистра */
